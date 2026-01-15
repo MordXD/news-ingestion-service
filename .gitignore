@@ -1,0 +1,25 @@
+# окружение
+.env
+.venv/
+venv/
+# API-коллекции Bruno и отчёты
+Access Manager API/
+*.bru
+bruno-report*.json
+openapi.json
+.claude
+# компиляты Python
+__pycache__/
+*.py[cod]
+
+# зависимости Poetry virtualenv
+.installed.cfg
+
+# Docker
+db-data/
+
+# VS Code
+.vscode/
+
+# системные
+.DS_Store
