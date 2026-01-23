@@ -11,8 +11,6 @@ from .tasks import fetch_feed_task
 
 
 class FeedViewSet(viewsets.ModelViewSet):
-    """RSS/Atom feed management API."""
-
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
 
@@ -23,7 +21,6 @@ class FeedViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def sync(self, request, pk=None):
-        """Trigger manual feed sync. Returns task_id for tracking."""
         feed = get_object_or_404(Feed, pk=pk)
 
         sync_log = SyncLog.objects.create(
@@ -45,7 +42,6 @@ class FeedViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def sync_logs(self, request, pk=None):
-        """Get sync history for feed."""
         feed = get_object_or_404(Feed, pk=pk)
         logs = SyncLog.objects.filter(feed=feed).select_related('feed')
 

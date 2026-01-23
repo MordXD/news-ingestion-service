@@ -60,6 +60,7 @@ uv run python manage.py runserver
 docker-compose up --build
 ```
 
+
 ---
 
 ## переключение парсера

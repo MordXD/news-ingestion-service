@@ -1,19 +1,18 @@
 """
-Модель SyncLog - операционная видимость пайплайна инжестии.
+Модель SyncLog — логирование выполнения пайплайна ingestion.
 
-Критично для production:
-- Отладка асинхронной обработки
-- Мониторинг стабильности
-- Аудит операций
+Используется для:
+- диагностики асинхронных задач
+- контроля стабильности обработки
+- аудита операций
 """
-
 from django.db import models
 
 from apps.feeds.models import Feed
 
 
 class SyncLog(models.Model):
-    """Лог синхронизации фида - операционная видимость."""
+    """Лог синхронизации фида - операционная видимость"""
 
     class Status(models.TextChoices):
         PENDING = 'pending', 'Pending'
@@ -32,19 +31,15 @@ class SyncLog(models.Model):
         default=Status.PENDING
     )
 
-    # Timestamps
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True, blank=True)
 
-    # Metrics
     items_found = models.PositiveIntegerField(default=0)
     items_created = models.PositiveIntegerField(default=0)
     items_updated = models.PositiveIntegerField(default=0)
 
-    # Error tracking
     error_message = models.TextField(blank=True)
 
-    # Celery task tracking
     task_id = models.CharField(max_length=255, blank=True, db_index=True)
 
     class Meta:
@@ -60,7 +55,7 @@ class SyncLog(models.Model):
 
     @property
     def duration_seconds(self) -> float | None:
-        """Длительность синхронизации в секундах."""
+        """Длительность синхронизации в секундах"""
         if self.finished_at and self.started_at:
             return (self.finished_at - self.started_at).total_seconds()
         return None
